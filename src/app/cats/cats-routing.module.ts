@@ -6,6 +6,7 @@ import { NewCatComponent } from './new-cat/new-cat.component';
 const routes: Routes = [
   { path: 'search', component: SearchCatsComponent },
   { path: 'new', component: NewCatComponent },
+  { path: 'edit/:id', component: NewCatComponent },
 ];
 
 @NgModule({

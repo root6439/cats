@@ -7,13 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'cats';
-
   constructor(private router: Router) {}
 
   goToSearch(): void {
-    console.log('funfando');
-
     this.router.navigate(['cats/search']);
   }
 }
