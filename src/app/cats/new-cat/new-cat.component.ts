@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Cat } from 'src/app/shared/models/Cat.model';
 
 @Component({
   selector: 'app-new-cat',
@@ -47,21 +48,34 @@ export class NewCatComponent implements OnInit {
   ];
 
   formCat = new FormGroup({
-    name: new FormControl(),
-    length: new FormControl(),
-    weight: new FormControl(),
-    race: new FormControl(),
+    name: new FormControl('', Validators.required),
+    length: new FormControl<number | null>(null, Validators.required),
+    weight: new FormControl<number | null>(null),
+    race: new FormControl(''),
   });
+
+  editMode = false;
+  catId: number;
+  selectedCat: Cat;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    console.log(this.formCat);
-    
     if (this.route.routeConfig.path.includes('edit')) {
-      let id = this.route.snapshot.params['id'];
-      let cat = this.dataSource.find((item) => item.id == id);
-      console.log(cat);
+      this.editMode = true;
+      this.catId = this.route.snapshot.params['id'];
+      this.selectedCat = this.dataSource.find((item) => item.id == this.catId);
+
+      this.formCat.patchValue({
+        name: this.selectedCat.name,
+        length: this.selectedCat.length,
+        weight: this.selectedCat.weight,
+        race: this.selectedCat.race,
+      });
     }
+  }
+
+  createCat() {
+    // lógica aqui
   }
 }
