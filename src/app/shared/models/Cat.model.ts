@@ -1,7 +1,7 @@
 export class Cat {
   id: number;
   name: string;
-  length: number | null;
-  weight: number | null;
+  length: number;
+  weight: number;
   race: string;
 }

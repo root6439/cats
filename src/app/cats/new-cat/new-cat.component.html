@@ -1,6 +1,6 @@
 <h2>{{ editMode ? "Editar" : "Cadastrar" }} gato</h2>
 
-<form [formGroup]="formCat" (ngSubmit)="createCat()">
+<form [formGroup]="formCat" (ngSubmit)="editMode ? updateCat() : createCat()">
   <p>
     <mat-form-field>
       <mat-label>Nome</mat-label>
@@ -31,10 +31,10 @@
   <button
     mat-flat-button
     color="primary"
-    [disabled]="formCat.invalid"
+    [disabled]="formCat.invalid || formCat.pristine"
     type="submit"
   >
-    Cadastrar
+    {{ editMode ? "Atualizar" : "Cadastrar" }}
   </button>
   <button mat-stroked-button color="primary" type="reset">Limpar</button>
 </form>

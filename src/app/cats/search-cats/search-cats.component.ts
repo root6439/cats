@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CatService } from '../cat.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-cats',
@@ -47,7 +48,7 @@ export class SearchCatsComponent implements OnInit {
     },
   ];
 
-  constructor(private service: CatService) {}
+  constructor(private service: CatService, private router: Router) {}
 
   ngOnInit(): void {
     this.service.getCats().subscribe((resp) => {

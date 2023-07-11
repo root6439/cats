@@ -13,4 +13,16 @@ export class CatService {
   getCats() {
     return this.http.get<Cat[]>(this.serverUrl);
   }
+
+  postCat() {}
+
+  putCat() {}
+
+  deleteCat() {}
+
+  isLoggedIn(): boolean {
+    console.log('chamou isLoggedIn');
+
+    return false;
+  }
 }

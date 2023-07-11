@@ -9,7 +9,7 @@ import { Cat } from 'src/app/shared/models/Cat.model';
   styleUrls: ['./new-cat.component.scss'],
 })
 export class NewCatComponent implements OnInit {
-  dataSource = [
+  dataSource: Cat[] = [
     {
       id: 1,
       name: 'Cesar',
@@ -48,14 +48,13 @@ export class NewCatComponent implements OnInit {
   ];
 
   formCat = new FormGroup({
-    name: new FormControl('', Validators.required),
-    length: new FormControl<number | null>(null, Validators.required),
-    weight: new FormControl<number | null>(null),
-    race: new FormControl(''),
+    name: new FormControl<string>(null, Validators.required),
+    length: new FormControl<number>(null, Validators.required),
+    weight: new FormControl<number>(null),
+    race: new FormControl<string>(null),
   });
 
   editMode = false;
-  catId: number;
   selectedCat: Cat;
 
   constructor(private route: ActivatedRoute) {}
@@ -63,8 +62,8 @@ export class NewCatComponent implements OnInit {
   ngOnInit(): void {
     if (this.route.routeConfig.path.includes('edit')) {
       this.editMode = true;
-      this.catId = this.route.snapshot.params['id'];
-      this.selectedCat = this.dataSource.find((item) => item.id == this.catId);
+      let catId: number = this.route.snapshot.params['id'];
+      this.selectedCat = this.dataSource.find((item) => item.id == catId);
 
       this.formCat.patchValue({
         name: this.selectedCat.name,
@@ -75,7 +74,16 @@ export class NewCatComponent implements OnInit {
     }
   }
 
-  createCat() {
-    // lógica aqui
+  createCat(): void {}
+
+  updateCat(): void {
+    let index = this.dataSource.findIndex(
+      (value) => value.id == this.selectedCat.id
+    );
+
+    this.dataSource[index] = {
+      id: this.selectedCat.id,
+      ...this.formCat.getRawValue(),
+    };
   }
 }
