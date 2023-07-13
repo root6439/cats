@@ -1,58 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CatService } from '../cat.service';
-import { Router } from '@angular/router';
+import { Cat } from 'src/app/shared/models/Cat.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search-cats',
   templateUrl: './search-cats.component.html',
   styleUrls: ['./search-cats.component.scss'],
 })
-export class SearchCatsComponent implements OnInit {
+export class SearchCatsComponent implements OnInit, OnDestroy {
   displayedColumns = ['id', 'name', 'length', 'weight', 'race', 'actions'];
 
-  dataSource = [
-    {
-      id: 1,
-      name: 'Cesar',
-      length: 0.3,
-      weight: 4.0,
-      race: 'Ciamês',
-    },
-    {
-      id: 2,
-      name: 'Augusto',
-      length: 0.5,
-      weight: 5.0,
-      race: 'Persa',
-    },
-    {
-      id: 3,
-      name: 'Ronaldo',
-      length: 0.1,
-      weight: 2.0,
-      race: 'Burmês',
-    },
-    {
-      id: 4,
-      name: 'Gato',
-      length: 0.2,
-      weight: 6.0,
-      race: 'Bengal',
-    },
-    {
-      id: 5,
-      name: 'Farofa',
-      length: 0.8,
-      weight: 10.0,
-      race: 'Abissínio',
-    },
-  ];
+  dataSource: Cat[] = [];
 
-  constructor(private service: CatService, private router: Router) {}
+  serviceSub = new Subscription();
+
+  constructor(private service: CatService) {}
 
   ngOnInit(): void {
-    this.service.getCats().subscribe((resp) => {
-      console.log(resp);
+    this.serviceSub = this.service.getCats().subscribe((resp) => {
+      this.dataSource = resp;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.serviceSub.unsubscribe();
   }
 }
