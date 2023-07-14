@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CatService } from '../cat.service';
 import { Cat } from 'src/app/shared/models/Cat.model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, debounceTime, filter, take } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-search-cats',
@@ -15,12 +17,49 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
 
   serviceSub = new Subscription();
 
-  constructor(private service: CatService) {}
+  searchControl = new FormControl<string>('');
+
+  subject = new Subject<string>();
+
+  constructor(
+    private service: CatService,
+    private toastService: ToastrService
+  ) {}
 
   ngOnInit(): void {
-    this.serviceSub = this.service.getCats().subscribe((resp) => {
+    this.getCats();
+    this.setConfigSubject();
+  }
+
+  getCats(searchValue: string = ''): void {
+    this.serviceSub = this.service.getCats(searchValue).subscribe((resp) => {
       this.dataSource = resp;
     });
+  }
+
+  setConfigSubject(): void {
+    this.subject
+      .pipe(
+        debounceTime(1000),
+        // filter((value) => value.length > 3 || value == '')
+      )
+      .subscribe((searchValue: string) => {
+        this.getCats(searchValue);
+      });
+  }
+
+  searchCats(searchValue: string): void {
+    this.subject.next(searchValue);
+  }
+
+  deleteCat(id: number): void {
+    this.service
+      .deleteCat(id)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.toastService.success('Sucesso!', 'Gato removido');
+        this.getCats();
+      });
   }
 
   ngOnDestroy(): void {

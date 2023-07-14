@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Cat } from '../shared/models/Cat.model';
 import { Observable } from 'rxjs';
@@ -11,8 +11,10 @@ export class CatService {
 
   constructor(private http: HttpClient) {}
 
-  getCats(): Observable<Cat[]> {
-    return this.http.get<Cat[]>(this.serverUrl);
+  getCats(searchValue: string): Observable<Cat[]> {
+    let httpParams = new HttpParams({ fromObject: { search: searchValue } });
+
+    return this.http.get<Cat[]>(this.serverUrl, { params: httpParams });
   }
 
   postCat(cat: Cat): Observable<Cat> {
@@ -27,7 +29,9 @@ export class CatService {
     return this.http.put<Cat>(`${this.serverUrl}/${id}`, cat);
   }
 
-  patchCat() {}
+  deleteCat(id: number) {
+    return this.http.delete<void>(`${this.serverUrl}/${id}`);
+  }
 
-  deleteCat() {}
+  patchCat() {}
 }

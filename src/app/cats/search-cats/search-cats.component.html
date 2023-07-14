@@ -1,6 +1,25 @@
 <h2>Busca de gatos</h2>
 
 <div class="m-auto">
+  <mat-form-field class="w-50">
+    <mat-label>Pesquise por nome</mat-label>
+    <input
+      matInput
+      type="text"
+      [formControl]="searchControl"
+      (ngModelChange)="searchCats($event)"
+    />
+    <button
+      *ngIf="searchControl.value != ''"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="searchControl.setValue('')"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+
   <table mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>Id</th>
@@ -42,6 +61,7 @@
           mat-icon-button
           color="warn"
           aria-label="Example icon button with a home icon"
+          (click)="deleteCat(element.id)"
         >
           <mat-icon>delete</mat-icon>
         </button>

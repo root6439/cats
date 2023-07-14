@@ -52,12 +52,7 @@ export class NewCatComponent implements OnInit {
   }
 
   fillForm(cat: Cat): void {
-    this.formCat.patchValue({
-      name: cat.name,
-      length: cat.length,
-      weight: cat.weight,
-      race: cat.race,
-    });
+    this.formCat.patchValue({ ...cat });
   }
 
   createCat(): void {
@@ -68,8 +63,8 @@ export class NewCatComponent implements OnInit {
           this.redirectAndShowToast();
         },
         error: (error: HttpErrorResponse) => {
-
-        }
+          this.showError();
+        },
       });
   }
 
@@ -81,16 +76,13 @@ export class NewCatComponent implements OnInit {
           this.redirectAndShowToast(resp.name);
         },
         error: (error: HttpErrorResponse) => {
-          
+          this.showError();
         },
       });
   }
 
   showError(): void {
-    this.toastService.error(
-      'Erro!',
-      'Não foi possível atualizar o gatinho!'
-    );
+    this.toastService.error('Erro!', 'Não foi possível atualizar o gatinho!');
   }
 
   redirectAndShowToast(name?: string): void {
