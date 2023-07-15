@@ -40,7 +40,7 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
   setConfigSubject(): void {
     this.subject
       .pipe(
-        debounceTime(1000),
+        debounceTime(1000)
         // filter((value) => value.length > 3 || value == '')
       )
       .subscribe((searchValue: string) => {
@@ -58,7 +58,7 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.toastService.success('Sucesso!', 'Gato removido');
-        this.getCats();
+        this.getCats(this.searchControl.value);
       });
   }
 

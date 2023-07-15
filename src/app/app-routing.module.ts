@@ -6,7 +6,11 @@ const routes: Routes = [
     path: 'cats',
     loadChildren: () => import('./cats/cats.module').then((m) => m.CatsModule),
   },
-  { path: '', redirectTo: 'cats/search', pathMatch: 'full' },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginModule),
+  },
 ];
 
 @NgModule({
