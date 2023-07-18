@@ -1,5 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoginService } from './login.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +16,12 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private service: LoginService,
+    private toast: ToastrService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -25,6 +35,23 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log(this.loginForm.value);
+    let { login, password } = this.loginForm.value;
+
+    this.service
+      .login(login, password)
+      .pipe(take(1))
+      .subscribe({
+        next: (value) => {
+          localStorage.setItem('auth', String(value.auth));
+          this.router.navigate(['/cats/search']);
+        },
+        error: (err: HttpErrorResponse) => {
+          if (err.status == 401) {
+            this.toast.error('Erro!', 'Usuário ou senha inválidos!');
+          } else {
+            this.toast.error('Erro!', 'Ocorreu um erro, teste novamente!');
+          }
+        },
+      });
   }
 }
