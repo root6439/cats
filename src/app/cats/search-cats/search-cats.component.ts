@@ -4,6 +4,7 @@ import { Cat } from 'src/app/shared/models/Cat.model';
 import { Subject, Subscription, debounceTime, filter, take } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-search-cats',
@@ -23,12 +24,14 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
 
   constructor(
     private service: CatService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.getCats();
     this.setConfigSubject();
+    this.getSearchQueryParams();
 
     this.searchControl.valueChanges
       .pipe(debounceTime(1000), take(1))
@@ -70,5 +73,11 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
         this.toastService.success('Sucesso!', 'Gato removido');
         this.getCats(this.searchControl.value);
       });
+  }
+
+  getSearchQueryParams(): void {
+    let searchValue: string = this.route.snapshot.queryParams['search'];
+    this.searchControl.setValue(searchValue);
+    this.getCats(searchValue);
   }
 }

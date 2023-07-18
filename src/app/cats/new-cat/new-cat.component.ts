@@ -6,6 +6,8 @@ import { Cat } from 'src/app/shared/models/Cat.model';
 import { CatService } from '../cat.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogExitPageComponent } from 'src/app/shared/components/dialog-exit-page/dialog-exit-page.component';
 
 @Component({
   selector: 'app-new-cat',
@@ -23,6 +25,7 @@ export class NewCatComponent implements OnInit {
   catId: number;
   editMode = false;
   selectedCat: Cat;
+  canExit = false;
 
   serviceSub = new Subscription();
 
@@ -30,7 +33,8 @@ export class NewCatComponent implements OnInit {
     private route: ActivatedRoute,
     private service: CatService,
     private toastService: ToastrService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -95,6 +99,24 @@ export class NewCatComponent implements OnInit {
     this.router.navigate(['/cats/search']).then((value) => {
       if (value) {
         this.toastService.success('Sucesso!', message);
+      }
+    });
+  }
+
+  back(): void {
+    this.router.navigate(['/cats/search'], { queryParamsHandling: 'preserve' });
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogExitPageComponent);
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      console.log(result);
+
+      if (result) {
+
+      } else {
+        
       }
     });
   }
