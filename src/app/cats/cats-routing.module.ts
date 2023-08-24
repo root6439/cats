@@ -3,24 +3,25 @@ import { RouterModule, Routes } from '@angular/router';
 import { SearchCatsComponent } from './search-cats/search-cats.component';
 import { NewCatComponent } from './new-cat/new-cat.component';
 import { PageNotFoundComponent } from '../shared/components/page-not-found/page-not-found.component';
-import {
-  canActivateGuard,
-  canDeactivateGuard,
-} from '../shared/guards/cat/cat-guard.service';
+import { canDeactivateGuard } from '../shared/guards/cat/cat-guard.service';
 
 const routes: Routes = [
-  { path: 'search', component: SearchCatsComponent },
+  {
+    path: 'search',
+    component: SearchCatsComponent,
+    data: { animation: '1' },
+  },
   {
     path: 'new',
     component: NewCatComponent,
     canDeactivate: [canDeactivateGuard],
-    canActivate: [canActivateGuard],
+    data: { animation: '2' },
   },
   {
     path: 'edit/:id',
     component: NewCatComponent,
     canDeactivate: [canDeactivateGuard],
-    canActivate: [canActivateGuard],
+    data: { animation: '2' },
   },
   { path: '**', component: PageNotFoundComponent },
 ];

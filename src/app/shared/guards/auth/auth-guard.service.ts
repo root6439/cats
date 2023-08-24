@@ -1,20 +1,14 @@
 import { inject } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivateFn,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../utils/Auth.service';
 
-export const AuthGuard: CanActivateFn = (
-  route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot
-) => {
+export const AuthGuard: CanActivateFn = () => {
   let router = inject(Router);
   let toast = inject(ToastrService);
+  let authService = inject(AuthService);
 
-  if (localStorage.getItem('token')) {
+  if (authService.isLoggedIn()) {
     return true;
   } else {
     toast.error('Erro', 'Faça login novamente');

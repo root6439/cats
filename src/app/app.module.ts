@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +21,7 @@ import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
     CatsModule,
     MatToolbarModule,
     MatButtonModule,
+    MatIconModule,
     HttpClientModule,
     SharedModule,
     ToastrModule.forRoot(),

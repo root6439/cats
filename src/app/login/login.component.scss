@@ -1,7 +1,23 @@
-mat-form-field {
-  width: 100%;
+.card {
+  padding: 16px;
+
+  &__title {
+    text-align: center;
+    font-size: 22px;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
-mat-card {
-    width: 60%;
+mat-form-field {
+  display: block;
+}
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

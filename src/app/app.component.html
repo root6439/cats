@@ -1,18 +1,21 @@
 <mat-toolbar color="primary">
   <div class="container-lg">
-    <div routerLink="/" class="c-pointer">Sistema de gatinhos</div>
+    <div class="c-pointer">Sistema de gatinhos</div>
 
-    <div>
+    <div *ngIf="authService.isLoggedIn()">
       <button mat-flat-button color="primary" routerLink="cats/search">
         Buscar
       </button>
       <button mat-flat-button color="primary" routerLink="cats/new">
         Cadastrar
       </button>
+      <button mat-icon-button (click)="logout()">
+        <mat-icon> logout </mat-icon>
+      </button>
     </div>
   </div>
 </mat-toolbar>
 
-<div class="container-lg mt-5">
+<div class="container-lg mt-5" [@routeAnimations]="getRouteAnimationData()">
   <router-outlet></router-outlet>
 </div>

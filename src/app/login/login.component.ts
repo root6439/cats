@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   createForm(): void {
     this.loginForm = this.fb.group({
       login: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required]],
     });
   }
 
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (value) => {
-          localStorage.setItem('auth', String(value.auth));
+          localStorage.setItem('token', value.token);
           this.router.navigate(['/cats/search']);
         },
         error: (err: HttpErrorResponse) => {
