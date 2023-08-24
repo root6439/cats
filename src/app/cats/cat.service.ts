@@ -2,12 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Cat } from '../shared/models/Cat.model';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CatService {
-  private serverUrl = 'http://localhost:3000/cats';
+  private serverUrl = `${environment.serverUrl}/cats`;
 
   constructor(private http: HttpClient) {}
 
