@@ -14,7 +14,7 @@ export const AuthGuard: CanActivateFn = (
   let router = inject(Router);
   let toast = inject(ToastrService);
 
-  if (localStorage.getItem('auth')) {
+  if (localStorage.getItem('token')) {
     return true;
   } else {
     toast.error('Erro', 'Faça login novamente');

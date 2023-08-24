@@ -5,6 +5,7 @@ import { Subject, Subscription, debounceTime, filter, take } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/shared/utils/Auth.service';
 
 @Component({
   selector: 'app-search-cats',
@@ -25,10 +26,13 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
   constructor(
     private service: CatService,
     private toastService: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private auth: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.auth.isLoggedIn()
+
     this.getCats();
     this.setConfigSubject();
     this.getSearchQueryParams();

@@ -6,10 +6,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CatsModule } from './cats/cats.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
-import { Interceptor } from './shared/interceptor/interceptor.service';
+import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,10 +23,16 @@ import { Interceptor } from './shared/interceptor/interceptor.service';
     HttpClientModule,
     SharedModule,
     ToastrModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem('token'),
+        allowedDomains: ['localhost:3000'],
+        headerName: 'Authorization',
+        authScheme: 'Bearer ',
+      },
+    }),
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
-  ],
+  providers: [JwtHelperService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

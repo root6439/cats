@@ -1,17 +1,25 @@
-import { CanDeactivateFn } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivateFn, CanDeactivateFn, Router } from '@angular/router';
 import { NewCatComponent } from 'src/app/cats/new-cat/new-cat.component';
+import { AuthService } from '../../utils/Auth.service';
+import { inject } from '@angular/core';
 
-export interface CanComponentDeactivate {
-  canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
-}
-
-export const CatGuard: CanDeactivateFn<NewCatComponent> = (
+export const canDeactivateGuard: CanDeactivateFn<NewCatComponent> = (
   component: NewCatComponent
 ) => {
   if (!component.canExit) {
     component.openDialog();
     return false;
+  }
+
+  return true;
+};
+
+export const canActivateGuard: CanActivateFn = () => {
+  let authService: AuthService = inject(AuthService);
+  let router: Router = inject(Router);
+
+  if (!authService.isLoggedIn()) {
+    return router.parseUrl("/login");
   }
 
   return true;
