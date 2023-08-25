@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Cat } from '../shared/models/Cat.model';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
+import { Race } from '../shared/models/Race';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,11 @@ export class CatService {
   }
 
   deleteCat(id: number) {
-    return this.http.delete<void>(`${this.serverUrl}/${id}`);
+    return this.http.delete(`${this.serverUrl}/${id}`);
+  }
+
+  getRaces(): Observable<Race[]> {
+    return this.http.get<Race[]>(`${this.serverUrl}/races`);
   }
 
   patchCat() {}

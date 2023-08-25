@@ -1,43 +1,70 @@
 <h2>{{ editMode ? "Editar" : "Cadastrar" }} gato</h2>
 
-<form [formGroup]="formCat" (ngSubmit)="editMode ? updateCat() : createCat()">
-  <p>
-    <mat-form-field>
-      <mat-label>Nome</mat-label>
-      <input matInput formControlName="name" />
-      <mat-error>Campo obrigatório</mat-error>
-    </mat-form-field>
-  </p>
-  <p>
-    <mat-form-field>
-      <mat-label>Comprimento</mat-label>
-      <input matInput formControlName="length" type="number" />
-      <mat-error>Campo obrigatório</mat-error>
-    </mat-form-field>
-  </p>
-  <p>
-    <mat-form-field>
-      <mat-label>Peso</mat-label>
-      <input matInput formControlName="weight" type="number" />
-    </mat-form-field>
-  </p>
-  <p>
-    <mat-form-field>
-      <mat-label>Raça</mat-label>
-      <input matInput formControlName="race" />
-    </mat-form-field>
-  </p>
+<div class="card w-100">
+  <form [formGroup]="formCat" (ngSubmit)="editMode ? updateCat() : createCat()">
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="name" />
+          <mat-error>Campo obrigatório</mat-error>
+        </mat-form-field>
+      </div>
 
-  <button
-    mat-flat-button
-    color="primary"
-    [disabled]="formCat.invalid || formCat.pristine"
-    type="submit"
-  >
-    {{ editMode ? "Atualizar" : "Cadastrar" }}
-  </button>
-  <button mat-stroked-button color="primary" type="reset">Limpar</button>
-  <button mat-button (click)="back()" color="primary" type="button">
-    Cancelar
-  </button>
-</form>
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Raça</mat-label>
+          <mat-select formControlName="race" multiple>
+            <mat-option *ngFor="let race of races" [value]="race">
+              {{ race?.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Permitido no máximo 2 raças</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Peso</mat-label>
+          <input matInput formControlName="weight" type="number" />
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field>
+          <mat-label>Comprimento</mat-label>
+          <input matInput formControlName="length" type="number" />
+          <mat-error>Campo obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field class="example-full-width">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" />
+          <mat-hint>dd/mm/aaaa</mat-hint>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <button
+      mat-flat-button
+      color="primary"
+      [disabled]="formCat.invalid || formCat.pristine"
+      type="submit"
+    >
+      {{ editMode ? "Atualizar" : "Cadastrar" }}
+    </button>
+    <button mat-stroked-button color="primary" type="reset">Limpar</button>
+    <button mat-button (click)="back()" color="primary" type="button">
+      Cancelar
+    </button>
+  </form>
+</div>

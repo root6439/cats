@@ -11,6 +11,7 @@ import { SharedModule } from './shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { MatIconModule } from '@angular/material/icon';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,7 +35,10 @@ import { MatIconModule } from '@angular/material/icon';
       },
     }),
   ],
-  providers: [JwtHelperService],
+  providers: [
+    JwtHelperService,
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

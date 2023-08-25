@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogExitPageComponent } from 'src/app/shared/components/dialog-exit-page/dialog-exit-page.component';
+import { Race } from 'src/app/shared/models/Race';
 
 @Component({
   selector: 'app-new-cat',
@@ -19,13 +20,15 @@ export class NewCatComponent implements OnInit {
     name: new FormControl<string>(null, Validators.required),
     length: new FormControl<number>(null, Validators.required),
     weight: new FormControl<number>(null),
-    race: new FormControl<string>(null),
+    race: new FormControl<Race[]>(null, Validators.maxLength(2)),
+    birth: new FormControl<Date>(null, Validators.required),
   });
 
   catId: number;
   editMode = false;
   selectedCat: Cat;
   canExit = false;
+  races: Race[] = [];
 
   serviceSub = new Subscription();
 
@@ -39,6 +42,7 @@ export class NewCatComponent implements OnInit {
 
   ngOnInit(): void {
     this.verifyRoute();
+    this.getRaces();
   }
 
   verifyRoute(): void {
@@ -52,6 +56,12 @@ export class NewCatComponent implements OnInit {
   getCatById(): void {
     this.serviceSub = this.service.getCatById(this.catId).subscribe((resp) => {
       this.fillForm(resp);
+    });
+  }
+
+  getRaces(): void {
+    this.serviceSub = this.service.getRaces().subscribe((resp) => {
+      this.races = resp;
     });
   }
 
@@ -114,9 +124,7 @@ export class NewCatComponent implements OnInit {
       console.log(result);
 
       if (result) {
-
       } else {
-        
       }
     });
   }

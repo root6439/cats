@@ -1,0 +1,14 @@
+<div class="p-5">
+  <h1 mat-dialog-title>{{ data.title }}</h1>
+  <div mat-dialog-content class="mb-3">
+    {{ data.description }}
+  </div>
+  <div mat-dialog-actions [align]="'end'">
+    <button mat-flat-button color="warn" (click)="onSubmit(true)">
+      Excluir
+    </button>
+    <button mat-button color="primary" (click)="onSubmit(false)">
+      Cancelar
+    </button>
+  </div>
+</div>

@@ -6,6 +6,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/utils/Auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogGenericComponent } from 'src/app/shared/components/dialog-generic/dialog-generic.component';
 
 @Component({
   selector: 'app-search-cats',
@@ -27,11 +29,12 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
     private service: CatService,
     private toastService: ToastrService,
     private route: ActivatedRoute,
-    private auth: AuthService
+    private auth: AuthService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.auth.isLoggedIn()
+    this.auth.isLoggedIn();
 
     this.getCats();
     this.setConfigSubject();
@@ -69,11 +72,28 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
     this.subject.next(searchValue);
   }
 
+  openDialogDeleteCat(cat: Cat): void {
+    const dialogRef = this.dialog.open(DialogGenericComponent, {
+      data: {
+        title: 'Exclusão de gato',
+        description: `Deseja mesmo excluir os registros do gato ${cat.name}?`,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.deleteCat(cat.id);
+      }
+    });
+  }
+
   deleteCat(id: number): void {
     this.service
       .deleteCat(id)
       .pipe(take(1))
-      .subscribe(() => {
+      .subscribe((value) => {
+        console.log(value);
+        
         this.toastService.success('Sucesso!', 'Gato removido');
         this.getCats(this.searchControl.value);
       });

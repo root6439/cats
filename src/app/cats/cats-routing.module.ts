@@ -24,6 +24,7 @@ const routes: Routes = [
     data: { animation: '2' },
   },
   { path: '**', component: PageNotFoundComponent },
+  { path: '', redirectTo: 'search', pathMatch: 'prefix' },
 ];
 
 @NgModule({

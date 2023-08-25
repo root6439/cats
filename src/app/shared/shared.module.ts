@@ -4,9 +4,21 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { DialogExitPageComponent } from './components/dialog-exit-page/dialog-exit-page.component';
+import { DialogGenericComponent } from './components/dialog-generic/dialog-generic.component';
+import { RacePipe } from './pipes/race.pipe';
+import { WeightPipe } from './pipes/weight.pipe';
+import { LengthPipe } from './pipes/length.pipe';
 
 @NgModule({
-  declarations: [PageNotFoundComponent, DialogExitPageComponent],
+  declarations: [
+    PageNotFoundComponent,
+    DialogExitPageComponent,
+    DialogGenericComponent,
+    RacePipe,
+    WeightPipe,
+    LengthPipe,
+  ],
   imports: [CommonModule, MatButtonModule, RouterModule],
+  exports: [RacePipe, WeightPipe, LengthPipe],
 })
 export class SharedModule {}

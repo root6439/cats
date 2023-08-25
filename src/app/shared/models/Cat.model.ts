@@ -1,7 +1,10 @@
+import { Race } from './Race';
+
 export class Cat {
   id?: number;
   name: string;
   length: number;
   weight: number;
-  race: string;
+  birth: Date;
+  race: Race[];
 }
