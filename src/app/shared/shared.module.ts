@@ -8,6 +8,7 @@ import { DialogGenericComponent } from './components/dialog-generic/dialog-gener
 import { RacePipe } from './pipes/race.pipe';
 import { WeightPipe } from './pipes/weight.pipe';
 import { LengthPipe } from './pipes/length.pipe';
+import { CustomValidators } from './validators/date.validator';
 
 @NgModule({
   declarations: [

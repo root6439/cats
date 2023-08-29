@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CatService } from '../cat.service';
 import { Cat } from 'src/app/shared/models/Cat.model';
 import { Subject, Subscription, debounceTime, filter, take } from 'rxjs';
@@ -8,16 +14,23 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/utils/Auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogGenericComponent } from 'src/app/shared/components/dialog-generic/dialog-generic.component';
+import { MatSort } from '@angular/material/sort';
+import {
+  MatTableDataSource,
+  MatTableDataSourcePaginator,
+} from '@angular/material/table';
 
 @Component({
   selector: 'app-search-cats',
   templateUrl: './search-cats.component.html',
   styleUrls: ['./search-cats.component.scss'],
 })
-export class SearchCatsComponent implements OnInit, OnDestroy {
+export class SearchCatsComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild(MatSort) sort: MatSort;
+
   displayedColumns = ['id', 'name', 'length', 'weight', 'race', 'actions'];
 
-  dataSource: Cat[] = [];
+  dataSource: MatTableDataSource<Cat> = new MatTableDataSource([]);
 
   serviceSub = new Subscription();
 
@@ -32,6 +45,10 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     public dialog: MatDialog
   ) {}
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
 
   ngOnInit(): void {
     this.auth.isLoggedIn();
@@ -53,7 +70,7 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
 
   getCats(searchValue: string = ''): void {
     this.serviceSub = this.service.getCats(searchValue).subscribe((resp) => {
-      this.dataSource = resp;
+      this.dataSource = new MatTableDataSource(resp);
     });
   }
 
@@ -93,7 +110,7 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe((value) => {
         console.log(value);
-        
+
         this.toastService.success('Sucesso!', 'Gato removido');
         this.getCats(this.searchControl.value);
       });

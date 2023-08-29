@@ -14,6 +14,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../shared/shared.module';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [NewCatComponent, SearchCatsComponent],
@@ -31,6 +32,7 @@ import { SharedModule } from '../shared/shared.module';
     MatNativeDateModule,
     MatSelectModule,
     SharedModule,
+    MatSortModule,
   ],
   providers: [],
 })

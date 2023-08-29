@@ -8,11 +8,12 @@ import {
   animate,
 } from '@angular/animations';
 
-const animationTime = '500ms';
-const animationType = 'ease-out';
+const animationTime = '600ms';
+const animationType = 'ease-in-out';
 const queryOptions = {
   optional: true,
 };
+const leftPosition = 0;
 
 export const slideInAnimation = trigger('routeAnimations', [
   transition('1 => 2', [
@@ -23,7 +24,7 @@ export const slideInAnimation = trigger('routeAnimations', [
         style({
           position: 'absolute',
           top: 0,
-          left: 0,
+          left: leftPosition,
           width: '100%',
         }),
       ],
@@ -57,7 +58,7 @@ export const slideInAnimation = trigger('routeAnimations', [
         style({
           position: 'absolute',
           top: 0,
-          left: 0,
+          left: leftPosition,
           width: '100%',
         }),
       ],

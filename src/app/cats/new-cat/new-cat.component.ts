@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogExitPageComponent } from 'src/app/shared/components/dialog-exit-page/dialog-exit-page.component';
 import { Race } from 'src/app/shared/models/Race';
+import { CustomValidators } from 'src/app/shared/validators/date.validator';
 
 @Component({
   selector: 'app-new-cat',
@@ -18,10 +19,22 @@ import { Race } from 'src/app/shared/models/Race';
 export class NewCatComponent implements OnInit {
   formCat = new FormGroup({
     name: new FormControl<string>(null, Validators.required),
-    length: new FormControl<number>(null, Validators.required),
-    weight: new FormControl<number>(null),
-    race: new FormControl<Race[]>(null, Validators.maxLength(2)),
-    birth: new FormControl<Date>(null, Validators.required),
+    length: new FormControl<number>(null, [
+      Validators.required,
+      Validators.min(0.1),
+    ]),
+    weight: new FormControl<number>(null, [
+      Validators.required,
+      Validators.min(0.1),
+    ]),
+    race: new FormControl<Race[]>(null, [
+      Validators.required,
+      Validators.maxLength(2),
+    ]),
+    birth: new FormControl<Date>(null, [
+      Validators.required,
+      CustomValidators.isValidDate,
+    ]),
   });
 
   catId: number;
@@ -70,6 +83,10 @@ export class NewCatComponent implements OnInit {
   }
 
   createCat(): void {
+    console.log(this.formCat);
+
+    return;
+
     this.serviceSub = this.service
       .postCat(this.formCat.getRawValue())
       .subscribe({

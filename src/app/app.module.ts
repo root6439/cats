@@ -12,6 +12,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { AuthService } from './shared/utils/Auth.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,6 +38,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
   ],
   providers: [
     JwtHelperService,
+    AuthService,
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
   ],
   bootstrap: [AppComponent],

@@ -19,7 +19,12 @@
               {{ race?.name }}
             </mat-option>
           </mat-select>
-          <mat-error>Permitido no máximo 2 raças</mat-error>
+          <mat-error *ngIf="formCat.get('race').hasError('required')">
+            Campo obrigatório
+          </mat-error>
+          <mat-error *ngIf="formCat.get('race').hasError('maxlength')">
+            Permitido no máximo 2 raças
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -29,6 +34,12 @@
         <mat-form-field>
           <mat-label>Peso</mat-label>
           <input matInput formControlName="weight" type="number" />
+          <mat-error *ngIf="formCat.get('weight').hasError('required')">
+            Campo obrigatório
+          </mat-error>
+          <mat-error *ngIf="formCat.get('weight').hasError('min')">
+            Peso inválido
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -36,20 +47,26 @@
         <mat-form-field>
           <mat-label>Comprimento</mat-label>
           <input matInput formControlName="length" type="number" />
-          <mat-error>Campo obrigatório</mat-error>
+          <mat-error *ngIf="formCat.get('length').hasError('required')">
+            Campo obrigatório
+          </mat-error>
+          <mat-error *ngIf="formCat.get('length').hasError('min')">
+            Comprimento inválido
+          </mat-error>
         </mat-form-field>
       </div>
 
       <div class="col">
         <mat-form-field class="example-full-width">
-          <mat-label>Choose a date</mat-label>
-          <input matInput [matDatepicker]="picker" />
+          <mat-label>Data de nascimento</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="birth" />
           <mat-hint>dd/mm/aaaa</mat-hint>
           <mat-datepicker #picker></mat-datepicker>
           <mat-datepicker-toggle
             matIconSuffix
             [for]="picker"
           ></mat-datepicker-toggle>
+          <mat-error>Data de nascimento superior a data atual</mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -57,8 +74,8 @@
     <button
       mat-flat-button
       color="primary"
-      [disabled]="formCat.invalid || formCat.pristine"
       type="submit"
+      [disabled]="formCat.invalid || formCat.pristine"
     >
       {{ editMode ? "Atualizar" : "Cadastrar" }}
     </button>
