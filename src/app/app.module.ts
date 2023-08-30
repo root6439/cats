@@ -11,8 +11,8 @@ import { SharedModule } from './shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { MatIconModule } from '@angular/material/icon';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { AuthService } from './shared/utils/Auth.service';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [AppComponent],

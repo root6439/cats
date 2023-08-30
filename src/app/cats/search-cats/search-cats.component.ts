@@ -28,7 +28,15 @@ import {
 export class SearchCatsComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns = ['id', 'name', 'length', 'weight', 'race', 'actions'];
+  displayedColumns = [
+    'id',
+    'name',
+    'length',
+    'weight',
+    'races',
+    'gender',
+    'actions',
+  ];
 
   dataSource: MatTableDataSource<Cat> = new MatTableDataSource([]);
 
@@ -94,6 +102,7 @@ export class SearchCatsComponent implements OnInit, OnDestroy, AfterViewInit {
       data: {
         title: 'Exclusão de gato',
         description: `Deseja mesmo excluir os registros do gato ${cat.name}?`,
+        labelButton: 'Excluir',
       },
     });
 

@@ -1,87 +1,98 @@
-<h2>{{ editMode ? "Editar" : "Cadastrar" }} gato</h2>
+<div class="content-register">
+  <h2>{{ editMode ? "Editar" : "Cadastrar" }} gato</h2>
 
-<div class="card w-100">
-  <form [formGroup]="formCat" (ngSubmit)="editMode ? updateCat() : createCat()">
-    <div class="row">
-      <div class="col">
-        <mat-form-field>
-          <mat-label>Nome</mat-label>
-          <input matInput formControlName="name" />
-          <mat-error>Campo obrigatório</mat-error>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <mat-label>Raça</mat-label>
-          <mat-select formControlName="race" multiple>
-            <mat-option *ngFor="let race of races" [value]="race">
-              {{ race?.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="formCat.get('race').hasError('required')">
-            Campo obrigatório
-          </mat-error>
-          <mat-error *ngIf="formCat.get('race').hasError('maxlength')">
-            Permitido no máximo 2 raças
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <mat-form-field>
-          <mat-label>Peso</mat-label>
-          <input matInput formControlName="weight" type="number" />
-          <mat-error *ngIf="formCat.get('weight').hasError('required')">
-            Campo obrigatório
-          </mat-error>
-          <mat-error *ngIf="formCat.get('weight').hasError('min')">
-            Peso inválido
-          </mat-error>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field>
-          <mat-label>Comprimento</mat-label>
-          <input matInput formControlName="length" type="number" />
-          <mat-error *ngIf="formCat.get('length').hasError('required')">
-            Campo obrigatório
-          </mat-error>
-          <mat-error *ngIf="formCat.get('length').hasError('min')">
-            Comprimento inválido
-          </mat-error>
-        </mat-form-field>
-      </div>
-
-      <div class="col">
-        <mat-form-field class="example-full-width">
-          <mat-label>Data de nascimento</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="birth" />
-          <mat-hint>dd/mm/aaaa</mat-hint>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-error>Data de nascimento superior a data atual</mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <button
-      mat-flat-button
-      color="primary"
-      type="submit"
-      [disabled]="formCat.invalid || formCat.pristine"
+  <div class="card">
+    <form
+      [formGroup]="formCat"
+      (ngSubmit)="editMode ? updateCat() : createCat()"
     >
-      {{ editMode ? "Atualizar" : "Cadastrar" }}
-    </button>
-    <button mat-stroked-button color="primary" type="reset">Limpar</button>
-    <button mat-button (click)="back()" color="primary" type="button">
-      Cancelar
-    </button>
-  </form>
+      <mat-form-field>
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error>Campo obrigatório</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Peso</mat-label>
+        <input matInput formControlName="weight" type="number" />
+        <mat-error *ngIf="formCat.get('weight').hasError('required')">
+          Campo obrigatório
+        </mat-error>
+        <mat-error *ngIf="formCat.get('weight').hasError('min')">
+          Peso inválido
+        </mat-error>
+        <span matTextSuffix>kg</span>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Comprimento</mat-label>
+        <input matInput formControlName="length" type="number" />
+        <mat-error *ngIf="formCat.get('length').hasError('required')">
+          Campo obrigatório
+        </mat-error>
+        <mat-error *ngIf="formCat.get('length').hasError('min')">
+          Comprimento inválido
+        </mat-error>
+        <span matTextSuffix>cm</span>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Raça</mat-label>
+        <mat-select
+          formControlName="races"
+          multiple
+          [compareWith]="compareRaces"
+        >
+          <mat-option *ngFor="let race of races" [value]="race">
+            {{ race?.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formCat.get('races').hasError('required')">
+          Campo obrigatório
+        </mat-error>
+        <mat-error *ngIf="formCat.get('races').hasError('maxlength')">
+          Permitido no máximo 2 raças
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Data de nascimento</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="birth"
+          placeholder="dd/mm/yyyy"
+        />
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-error>Data de nascimento superior a data atual</mat-error>
+      </mat-form-field>
+
+      <div class="gender-input">
+        <label>Gênero: </label>
+        <mat-radio-group formControlName="gender" color="primary">
+          <mat-radio-button value="M">Macho</mat-radio-button>
+          <mat-radio-button value="F">Fêmea</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="formCat.invalid || formCat.pristine"
+      >
+        {{ editMode ? "Atualizar" : "Cadastrar" }}
+      </button>
+      <button mat-stroked-button color="primary" type="reset" class="mx-2">
+        Limpar
+      </button>
+      <button mat-button (click)="back()" color="primary" type="button">
+        Cancelar
+      </button>
+    </form>
+  </div>
 </div>

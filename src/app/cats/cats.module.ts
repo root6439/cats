@@ -15,6 +15,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../shared/shared.module';
 import { MatSortModule } from '@angular/material/sort';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [NewCatComponent, SearchCatsComponent],
@@ -33,6 +34,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatSelectModule,
     SharedModule,
     MatSortModule,
+    MatRadioModule,
   ],
   providers: [],
 })

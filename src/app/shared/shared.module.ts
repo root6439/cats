@@ -9,6 +9,7 @@ import { RacePipe } from './pipes/race.pipe';
 import { WeightPipe } from './pipes/weight.pipe';
 import { LengthPipe } from './pipes/length.pipe';
 import { CustomValidators } from './validators/date.validator';
+import { GenderPipe } from './pipes/gender.pipe';
 
 @NgModule({
   declarations: [
@@ -18,8 +19,9 @@ import { CustomValidators } from './validators/date.validator';
     RacePipe,
     WeightPipe,
     LengthPipe,
+    GenderPipe,
   ],
   imports: [CommonModule, MatButtonModule, RouterModule],
-  exports: [RacePipe, WeightPipe, LengthPipe],
+  exports: [RacePipe, WeightPipe, LengthPipe, GenderPipe],
 })
 export class SharedModule {}

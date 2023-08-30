@@ -46,9 +46,14 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="race">
+    <ng-container matColumnDef="races">
       <th mat-sort-header mat-header-cell *matHeaderCellDef>Raça</th>
-      <td mat-cell *matCellDef="let element">{{ element.race | race }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.races | race }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="gender">
+      <th mat-sort-header mat-header-cell *matHeaderCellDef>Gênero</th>
+      <td mat-cell *matCellDef="let element">{{ element.gender | gender }}</td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
@@ -63,6 +68,7 @@
         >
           <mat-icon>edit</mat-icon>
         </button>
+
         <button
           mat-icon-button
           color="warn"

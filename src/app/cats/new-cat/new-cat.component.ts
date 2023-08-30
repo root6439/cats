@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogExitPageComponent } from 'src/app/shared/components/dialog-exit-page/dialog-exit-page.component';
 import { Race } from 'src/app/shared/models/Race';
 import { CustomValidators } from 'src/app/shared/validators/date.validator';
+import { DialogGenericComponent } from 'src/app/shared/components/dialog-generic/dialog-generic.component';
 
 @Component({
   selector: 'app-new-cat',
@@ -27,7 +28,7 @@ export class NewCatComponent implements OnInit {
       Validators.required,
       Validators.min(0.1),
     ]),
-    race: new FormControl<Race[]>(null, [
+    races: new FormControl<Race[]>(null, [
       Validators.required,
       Validators.maxLength(2),
     ]),
@@ -35,6 +36,7 @@ export class NewCatComponent implements OnInit {
       Validators.required,
       CustomValidators.isValidDate,
     ]),
+    gender: new FormControl<'M' | 'F'>(null, [Validators.required]),
   });
 
   catId: number;
@@ -55,7 +57,6 @@ export class NewCatComponent implements OnInit {
 
   ngOnInit(): void {
     this.verifyRoute();
-    this.getRaces();
   }
 
   verifyRoute(): void {
@@ -63,12 +64,15 @@ export class NewCatComponent implements OnInit {
       this.editMode = true;
       this.catId = this.route.snapshot.params['id'];
       this.getCatById();
+    } else {
+      this.getRaces();
     }
   }
 
   getCatById(): void {
     this.serviceSub = this.service.getCatById(this.catId).subscribe((resp) => {
       this.fillForm(resp);
+      this.races = resp.races;
     });
   }
 
@@ -80,13 +84,12 @@ export class NewCatComponent implements OnInit {
 
   fillForm(cat: Cat): void {
     this.formCat.patchValue({ ...cat });
+    this.formCat.get('races').disable();
+    this.formCat.get('birth').disable();
+    this.formCat.get('gender').disable();
   }
 
   createCat(): void {
-    console.log(this.formCat);
-
-    return;
-
     this.serviceSub = this.service
       .postCat(this.formCat.getRawValue())
       .subscribe({
@@ -117,6 +120,7 @@ export class NewCatComponent implements OnInit {
   }
 
   redirectAndShowToast(name?: string): void {
+    this.canExit = true;
     let message = 'Gato cadastrado';
 
     if (name) {
@@ -125,7 +129,7 @@ export class NewCatComponent implements OnInit {
 
     this.router.navigate(['/cats/search']).then((value) => {
       if (value) {
-        this.toastService.success('Sucesso!', message);
+        this.toastService.success(message, 'Sucesso!');
       }
     });
   }
@@ -134,15 +138,23 @@ export class NewCatComponent implements OnInit {
     this.router.navigate(['/cats/search'], { queryParamsHandling: 'preserve' });
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogExitPageComponent);
+  openDialog(): Promise<boolean> {
+    return new Promise((resolve) => {
+      const dialogRef = this.dialog.open(DialogGenericComponent, {
+        data: {
+          title: 'Deseja mesmo sair?',
+          description: 'Você possui alterações que não foram salvas.',
+          labelButton: 'Sair',
+        },
+      });
 
-    dialogRef.afterClosed().subscribe((result: boolean) => {
-      console.log(result);
-
-      if (result) {
-      } else {
-      }
+      dialogRef.afterClosed().subscribe((result: boolean) => {
+        resolve(result);
+      });
     });
+  }
+
+  compareRaces(r1: Race, r2: Race) {
+    return r1?.id == r2?.id;
   }
 }

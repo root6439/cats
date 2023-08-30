@@ -6,5 +6,6 @@ export class Cat {
   length: number;
   weight: number;
   birth: Date;
-  race: Race[];
+  gender: 'M' | 'F';
+  races: Race[];
 }

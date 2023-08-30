@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { ChildrenOutletContexts, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  ChildrenOutletContexts,
+  Router,
+} from '@angular/router';
 import { AuthService } from './shared/utils/Auth.service';
 import { slideInAnimation } from './shared/animations/slideIn';
 
@@ -12,6 +16,7 @@ import { slideInAnimation } from './shared/animations/slideIn';
 export class AppComponent {
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     public authService: AuthService,
     private contexts: ChildrenOutletContexts
   ) {}
