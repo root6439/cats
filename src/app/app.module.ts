@@ -6,13 +6,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CatsModule } from './cats/cats.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule, JwtHelperService } from '@auth0/angular-jwt';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from './shared/utils/Auth.service';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,6 +41,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     JwtHelperService,
     AuthService,
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

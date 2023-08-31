@@ -15,19 +15,14 @@ import { AuthService } from 'src/app/shared/utils/Auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogGenericComponent } from 'src/app/shared/components/dialog-generic/dialog-generic.component';
 import { MatSort } from '@angular/material/sort';
-import {
-  MatTableDataSource,
-  MatTableDataSourcePaginator,
-} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-search-cats',
   templateUrl: './search-cats.component.html',
   styleUrls: ['./search-cats.component.scss'],
 })
-export class SearchCatsComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild(MatSort) sort: MatSort;
-
+export class SearchCatsComponent implements OnInit, OnDestroy {
   displayedColumns = [
     'id',
     'name',
@@ -53,10 +48,6 @@ export class SearchCatsComponent implements OnInit, OnDestroy, AfterViewInit {
     private auth: AuthService,
     public dialog: MatDialog
   ) {}
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-  }
 
   ngOnInit(): void {
     this.auth.isLoggedIn();

@@ -16,8 +16,8 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'cats',
-    pathMatch: 'prefix',
+    redirectTo: 'cats/search',
+    pathMatch: 'full',
   },
 ];
 

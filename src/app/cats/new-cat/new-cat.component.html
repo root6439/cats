@@ -87,7 +87,7 @@
       >
         {{ editMode ? "Atualizar" : "Cadastrar" }}
       </button>
-      <button mat-stroked-button color="primary" type="reset" class="mx-2">
+      <button mat-stroked-button color="primary"  class="mx-2" (click)="resetForm()" type="button">
         Limpar
       </button>
       <button mat-button (click)="back()" color="primary" type="button">

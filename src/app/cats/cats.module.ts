@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../shared/shared.module';
 import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [NewCatComponent, SearchCatsComponent],
@@ -35,6 +36,7 @@ import { MatRadioModule } from '@angular/material/radio';
     SharedModule,
     MatSortModule,
     MatRadioModule,
+    MatPaginatorModule,
   ],
   providers: [],
 })

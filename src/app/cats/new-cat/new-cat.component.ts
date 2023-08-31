@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -17,7 +17,7 @@ import { DialogGenericComponent } from 'src/app/shared/components/dialog-generic
   templateUrl: './new-cat.component.html',
   styleUrls: ['./new-cat.component.scss'],
 })
-export class NewCatComponent implements OnInit {
+export class NewCatComponent implements OnInit, OnDestroy {
   formCat = new FormGroup({
     name: new FormControl<string>(null, Validators.required),
     length: new FormControl<number>(null, [
@@ -46,6 +46,7 @@ export class NewCatComponent implements OnInit {
   races: Race[] = [];
 
   serviceSub = new Subscription();
+  dialogRefSub = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +58,11 @@ export class NewCatComponent implements OnInit {
 
   ngOnInit(): void {
     this.verifyRoute();
+  }
+
+  ngOnDestroy(): void {
+    this.serviceSub.unsubscribe();
+    this.dialogRefSub.unsubscribe();
   }
 
   verifyRoute(): void {
@@ -148,10 +154,22 @@ export class NewCatComponent implements OnInit {
         },
       });
 
-      dialogRef.afterClosed().subscribe((result: boolean) => {
-        resolve(result);
-      });
+      this.dialogRefSub = dialogRef
+        .afterClosed()
+        .subscribe((result: boolean) => {
+          resolve(result);
+        });
     });
+  }
+
+  resetForm(): void {
+    if (this.editMode) {
+      this.formCat.get('name').reset();
+      this.formCat.get('length').reset();
+      this.formCat.get('weight').reset();
+    } else {
+      this.formCat.reset();
+    }
   }
 
   compareRaces(r1: Race, r2: Race) {
