@@ -40,8 +40,12 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-
 .content-register {
   width: 50%;
   margin: auto;
+}
+
+.title-page {
+  display: flex;
+  justify-content: space-between;
 }

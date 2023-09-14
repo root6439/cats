@@ -1,7 +1,7 @@
 import { Race } from './Race';
 
 export class Cat {
-  id?: number;
+  id?: string;
   name: string;
   length: number;
   weight: number;

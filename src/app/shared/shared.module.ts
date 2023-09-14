@@ -10,6 +10,11 @@ import { WeightPipe } from './pipes/weight.pipe';
 import { LengthPipe } from './pipes/length.pipe';
 import { CustomValidators } from './validators/date.validator';
 import { GenderPipe } from './pipes/gender.pipe';
+import { CpfPipe } from './pipes/cpf.pipe';
+import { InputSearchComponent } from './components/input-search/input-search.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,8 +25,24 @@ import { GenderPipe } from './pipes/gender.pipe';
     WeightPipe,
     LengthPipe,
     GenderPipe,
+    CpfPipe,
+    InputSearchComponent,
   ],
-  imports: [CommonModule, MatButtonModule, RouterModule],
-  exports: [RacePipe, WeightPipe, LengthPipe, GenderPipe],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    RouterModule,
+    MatIconModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+  ],
+  exports: [
+    RacePipe,
+    WeightPipe,
+    LengthPipe,
+    GenderPipe,
+    CpfPipe,
+    InputSearchComponent,
+  ],
 })
 export class SharedModule {}

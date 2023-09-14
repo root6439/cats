@@ -1,0 +1,21 @@
+<mat-form-field class="w-50">
+  <mat-label>
+    <ng-content></ng-content>
+  </mat-label>
+  <input
+    matInput
+    type="text"
+    [formControl]="searchControl"
+    (ngModelChange)="searchSub.next($event)"
+  />
+  <button
+    *ngIf="searchControl.value != ''"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="searchControl.setValue('')"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <mat-error>Necessário informar ao menos 3 caracteres</mat-error>
+</mat-form-field>

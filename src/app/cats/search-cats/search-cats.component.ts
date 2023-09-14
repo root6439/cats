@@ -14,24 +14,18 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/shared/utils/Auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogGenericComponent } from 'src/app/shared/components/dialog-generic/dialog-generic.component';
-import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-search-cats',
   templateUrl: './search-cats.component.html',
   styleUrls: ['./search-cats.component.scss'],
 })
-export class SearchCatsComponent implements OnInit, OnDestroy {
-  displayedColumns = [
-    'id',
-    'name',
-    'length',
-    'weight',
-    'races',
-    'gender',
-    'actions',
-  ];
+export class SearchCatsComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  displayedColumns = ['name', 'length', 'weight', 'races', 'gender', 'actions'];
 
   dataSource: MatTableDataSource<Cat> = new MatTableDataSource([]);
 
@@ -50,9 +44,6 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.auth.isLoggedIn();
-
-    this.getCats();
     this.setConfigSubject();
     this.getSearchQueryParams();
 
@@ -63,14 +54,25 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
       });
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
+
   ngOnDestroy(): void {
     this.serviceSub.unsubscribe();
   }
 
-  getCats(searchValue: string = ''): void {
-    this.serviceSub = this.service.getCats(searchValue).subscribe((resp) => {
-      this.dataSource = new MatTableDataSource(resp);
-    });
+  getCats(
+    searchValue: string = '',
+    page: number = 0,
+    offset: number = 5
+  ): void {
+    this.serviceSub = this.service
+      .getCats(searchValue, page + 1, offset)
+      .subscribe((resp) => {
+        this.dataSource = new MatTableDataSource(resp.data);
+        this.paginator.length = resp.totalElements;
+      });
   }
 
   setConfigSubject(): void {
@@ -97,21 +99,22 @@ export class SearchCatsComponent implements OnInit, OnDestroy {
       },
     });
 
-    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-      if (confirmed) {
-        this.deleteCat(cat.id);
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.deleteCat(cat.id);
+        }
+      });
   }
 
-  deleteCat(id: number): void {
+  deleteCat(id: string): void {
     this.service
       .deleteCat(id)
       .pipe(take(1))
       .subscribe((value) => {
-        console.log(value);
-
-        this.toastService.success('Sucesso!', 'Gato removido');
+        this.toastService.success('Gato removido', 'Sucesso!');
         this.getCats(this.searchControl.value);
       });
   }

@@ -11,6 +11,7 @@ import { DialogExitPageComponent } from 'src/app/shared/components/dialog-exit-p
 import { Race } from 'src/app/shared/models/Race';
 import { CustomValidators } from 'src/app/shared/validators/date.validator';
 import { DialogGenericComponent } from 'src/app/shared/components/dialog-generic/dialog-generic.component';
+import { PutCatRequest } from 'src/app/shared/models/cats/PutCatRequest.model';
 
 @Component({
   selector: 'app-new-cat',
@@ -39,7 +40,7 @@ export class NewCatComponent implements OnInit, OnDestroy {
     gender: new FormControl<'M' | 'F'>(null, [Validators.required]),
   });
 
-  catId: number;
+  catId: string;
   editMode = false;
   selectedCat: Cat;
   canExit = false;
@@ -110,7 +111,7 @@ export class NewCatComponent implements OnInit, OnDestroy {
 
   updateCat(): void {
     this.serviceSub = this.service
-      .putCat(this.catId, this.formCat.getRawValue())
+      .putCat(this.catId, this.putCatRequest)
       .subscribe({
         next: (resp) => {
           this.redirectAndShowToast(resp.name);
@@ -174,5 +175,14 @@ export class NewCatComponent implements OnInit, OnDestroy {
 
   compareRaces(r1: Race, r2: Race) {
     return r1?.id == r2?.id;
+  }
+
+  get putCatRequest(): PutCatRequest {
+    let { length, name, weight } = this.formCat.value;
+    return {
+      length,
+      name,
+      weight,
+    };
   }
 }

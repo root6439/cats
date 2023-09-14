@@ -1,4 +1,4 @@
 export class Race {
-  id: number;
+  id: string;
   name: string;
 }

@@ -14,7 +14,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../shared/shared.module';
-import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
@@ -34,7 +33,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatNativeDateModule,
     MatSelectModule,
     SharedModule,
-    MatSortModule,
     MatRadioModule,
     MatPaginatorModule,
   ],
