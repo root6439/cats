@@ -46,6 +46,6 @@ export class CatService {
   }
 
   getRaces(): Observable<Race[]> {
-    return this.http.get<Race[]>(`${this.serverUrl}/races`);
+    return this.http.get<Race[]>(`${environment.serverUrl}/races`);
   }
 }
