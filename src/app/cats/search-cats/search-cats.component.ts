@@ -113,9 +113,13 @@ export class SearchCatsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.service
       .deleteCat(id)
       .pipe(take(1))
-      .subscribe((value) => {
+      .subscribe(() => {
         this.toastService.success('Gato removido', 'Sucesso!');
-        this.getCats(this.searchControl.value);
+        this.getCats(
+          this.searchControl.value,
+          this.paginator.pageIndex,
+          this.paginator.pageSize
+        );
       });
   }
 
